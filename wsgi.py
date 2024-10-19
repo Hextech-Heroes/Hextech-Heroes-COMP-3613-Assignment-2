@@ -98,9 +98,8 @@ def add_review(lname, title, text):
 def get_students():
   # gets all objects of a model
   students = get_all_students()
-  for x in students:
-    print(x.reviews)
-    print('\n')
+  get_all_reviews(students)
+
   #print(students.reviews)
 
 

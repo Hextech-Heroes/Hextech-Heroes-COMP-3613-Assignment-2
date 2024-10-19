@@ -12,3 +12,10 @@ class Student(db.Model):
 
     def __repr__(self):
       return f'<Student {self.id} - {self.fName} {self.lName}>'
+    
+    def get_json(self) -> dict[str, str]:
+        return {
+            "id": self.id,
+            "first_name": self.fName,
+            "last_name": self.lName,
+        }

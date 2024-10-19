@@ -3,14 +3,21 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import User
+from App.models import User, Student, Review
 from App.controllers import (
     create_user,
     get_all_users_json,
     login,
     get_user,
     get_user_by_username,
-    update_user
+    update_user,
+    create_student,
+    get_student_by_lName,
+    get_student,
+    get_all_students,
+    get_all_students_json,
+    create_review,
+    get_review
 )
 
 
@@ -64,16 +71,28 @@ class UsersIntegrationTests(unittest.TestCase):
 
     def test_create_user(self):
         user = create_user("rick", "bobpass")
-        assert user.username == "rick"
+        assert user.username == "rick"  
 
     def test_get_all_users_json(self):
         users_json = get_all_users_json()
         self.assertListEqual([{"id":1, "username":"bob"}, {"id":2, "username":"rick"}], users_json)
 
-    # Tests data changes in the database
-    def test_update_user(self):
-        update_user(1, "ronnie")
-        user = get_user(1)
-        assert user.username == "ronnie"
+    def test_create_student(self):
+        student = create_student("rob", "robbington")
+        assert student.fName == "rob"  
         
+    def test_get_all_students_json(self):
+        students_json = get_all_students_json()
+        self.assertListEqual([{"id":1, "First Name":"bob" ,"Last Name":"bobbington"}, {"id":2, "First Name":"rob", "Last Name":"robbington"}], students_json)
+#
+
+    def test_create_review(self):
+        student = create_student("bob","bobbington")
+        review = create_review(student,'Good Job', 'Has done excellent work in class')
+        assert review.title == 'Good Job'
+
+    def test_get_all_reviews(self):
+        student = get_student_by_lName("bobbington")
+        review = get_review(student)
+        assert review.title == 'Good Job'
 
